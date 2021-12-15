@@ -67,36 +67,15 @@ def emptyGrid(rows, cols):
         col=[]
         for j in range(cols):
             col.append(1)
-        row.append(col)    
-
-    return row
-print(emptyGrid(1,1))
-
+        row.append(col) 
+    return  row
 '''
 createShip()
 Parameters: no parameters
 Returns: 2D list of ints
 '''
 def createShip():
-    import random
-    row = random.randint(1,8)
-    col = random.randint(1,8)
-    hv = random.randint(0,1)
-    if hv==0:
-      p=row-1
-      randomValue=col
-    else:
-      p=col-1
-      randomValue=row
-    d1=[[randomValue for j in range(1)] for i in range(3)]
-
-    for i in range(len(d1)):
-      d2=d1[i]
- 
-      d2.insert(hv,p)
-      p=p+1
-    
-    return d1
+        return 
  
    
 
@@ -106,20 +85,7 @@ Parameters: 2D list of ints ; 2D list of ints
 Returns: bool
 '''
 def checkShip(grid, ship):
-    count=0
-    for i in range(3):
-        row=ship[i][0]
-        col=ship[i][1]
-        if grid[row][col]==1:
-        # print(True)
-           count=count+1
-    # else: print (False)
-    if count==3:
-        return True
-    # print("returning true")
-    else:
-        # print("returning false")
-       return False
+   return
 
     
 
@@ -130,21 +96,7 @@ Parameters: 2D list of ints ; int
 Returns: 2D list of ints
 '''
 def addShips(grid, numShips):
-    count=0
-    # return grid
-    for j in range(numShips):
-        ship = createShip()  
-        check =checkShip(grid,ship)
-        if check == True:
-            for i in range(3):
-             row=ship[i][0]
-             col=ship[i][1]
-            #  if grid [row][col]==2:
-            #      print ("over lap")
-             grid[row][col]=2
-             count=count+1
-            
-    return grid
+   return 
 '''
 drawGrid(data, canvas, grid, showShips)
 Parameters: dict mapping strs to values ; Tkinter canvas ; 2D list of ints ; bool
