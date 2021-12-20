@@ -29,20 +29,20 @@ def makeModel(data):
     data["rows"]=10
     data["cols"]=10
     data["board_size"]=500
-    data["cell_size"]= 5
+    data["cell_size"]= (int)(data["board_size"]/(data["rows"]*data["cols"]))
     data["num_ships"]= 5
 
     for i in range (2):
-        grid=emptyGrid(10, 10)
-        for j in range(5):
+        grid=emptyGrid(data["rows"], data["cols"])
+        for j in range(data["num_ships"]):
            ship=createShip()
            check=checkShip(grid,ship)
            if check==True:
               addShips(grid,1)
         if i==0:
-            data["board1"]=grid
+            data["userboard"]=grid
         else:
-            data["board2"]=grid        
+            data["compboard"]=grid        
     
     return data
 
@@ -57,12 +57,12 @@ Returns: None
 def makeView(data, userCanvas, compCanvas):
     grid= test.testGrid()
     showShips = True
-    for a in range(2):
-       if a==0:
-          board=data["board1"]
+    for i in range(2):
+       if i==0:
+        #   board=data["userboard"]
           canvas=userCanvas
        else:
-          board=data["board2"]
+        #   board=data["compboard"]
           canvas=compCanvas
       
        drawGrid(data, canvas, grid, showShips)
@@ -100,14 +100,14 @@ Parameters: int ; int
 Returns: 2D list of ints
 '''
 def emptyGrid(rows, cols):
-    row=[]
+    grid=[]
     for i in range (rows):
         col=[]
         for j in range(cols):
             col.append(1)
-        row.append(col)    
+        grid.append(col)    
 
-    return row
+    return grid
 # print(emptyGrid(1,1))
 
 '''
@@ -117,22 +117,22 @@ Returns: 2D list of ints
 '''
 def createShip():
     import random
-    row = random.randint(1,8)
-    col = random.randint(1,8)
-    hv = random.randint(0,1)
-    if hv==0:
-      p=row-1
-      randomValue=col
+    randomrowvalue = random.randint(1,8)
+    randomcolvalue = random.randint(1,8)
+    horizontalorvertical = random.randint(0,1)
+    if horizontalorvertical==0:
+      randomvalue= randomrowvalue-1
+      constantValue=randomcolvalue
     else:
-      p=col-1
-      randomValue=row
-    d1=[[randomValue for j in range(1)] for i in range(3)]
+      randomvalue=randomcolvalue-1
+      constantValue=randomrowvalue
+    d1=[[constantValue for j in range(1)] for i in range(3)]
 
     for i in range(len(d1)):
       d2=d1[i]
  
-      d2.insert(hv,p)
-      p=p+1
+      d2.insert( horizontalorvertical ,randomvalue)
+      randomvalue=randomvalue+1
     
     return d1
  
@@ -148,7 +148,7 @@ def checkShip(grid, ship):
     for i in range(3):
         row=ship[i][0]
         col=ship[i][1]
-        if grid[row][col]==1:
+        if grid[row][col]==EMPTY_UNCLICKED:
         # print(True)
            count=count+1
     # else: print (False)
@@ -179,7 +179,7 @@ def addShips(grid, numShips):
              col=ship[i][1]
             #  if grid [row][col]==2:
             #      print ("over lap")
-             grid[row][col]=2
+             grid[row][col]=SHIP_UNCLICKED
              count=count+1
             
     return grid
@@ -190,12 +190,13 @@ Returns: None
 '''
 def drawGrid(data, canvas, grid, showShips): 
     # grid = test.testGrid()
-    for i in range(10):
-        for j in range(10):
-            if grid[i][j]==2:
-               canvas.create_rectangle(j*50, i*50, (j+1)*50, (i+1)*50,fill="yellow")
+    for i in range(data["rows"]):
+        for j in range(data["cols"]):
+            if grid[i][j]==SHIP_UNCLICKED:
+               canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="yellow")
             else:
-               canvas.create_rectangle(j*50, i*50, (j+1)*50, (i+1)*50,fill="blue")    
+               canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="blue")
+  
     canvas.pack()
 
         
