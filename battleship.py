@@ -31,18 +31,20 @@ def makeModel(data):
     data["board_size"]=500
     data["cell_size"]= (int)(data["board_size"]/(data["rows"]*data["cols"]))
     data["num_ships"]= 5
-
-    for i in range (2):
-        grid=emptyGrid(data["rows"], data["cols"])
-        for j in range(data["num_ships"]):
-           ship=createShip()
-           check=checkShip(grid,ship)
-           if check==True:
-              addShips(grid,1)
-        if i==0:
-            data["userboard"]=grid
-        else:
-            data["compboard"]=grid        
+    grid=emptyGrid(data["rows"],data["cols"])
+    data["userboard"]=test.testGrid()
+    data["compboard"]=addShips(grid,data["num_ships"])
+    # for i in range (2):
+    #     grid=emptyGrid(data["rows"], data["cols"])
+    #     for j in range(data["num_ships"]):
+    #        ship=createShip()
+    #        check=checkShip(grid,ship)
+    #        if check==True:
+    #           addShips(grid,1)
+    #     if i==0:
+    #         data["userboard"]=grid
+    #     else:
+    #         data["compboard"]=grid        
     
     return data
 
@@ -55,17 +57,19 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
-    grid= test.testGrid()
+    # grid= test.testGrid()
     showShips = True
-    for i in range(2):
-       if i==0:
-        #   board=data["userboard"]
-          canvas=userCanvas
-       else:
-        #   board=data["compboard"]
-          canvas=compCanvas
-      
-       drawGrid(data, canvas, grid, showShips)
+    drawGrid(data, compCanvas,data["compboard"] , showShips)
+    drawGrid(data, userCanvas,data["userboard"], showShips)
+
+    # for i in range(2):
+    #    if i==0:
+    #     #   board=data["userboard"]
+    #       canvas=userCanvas
+    #    else:
+    #     #   board=data["compboard"]
+    #       canvas=compCanvas
+    #   drawGrid(data, canvas, grid, showShips)
 
     
     
@@ -169,18 +173,15 @@ Returns: 2D list of ints
 '''
 def addShips(grid, numShips):
     count=0
-    # return grid
-    for j in range(numShips):
+    while count< numShips:
         ship = createShip()  
         check =checkShip(grid,ship)
-        if check == True:
-            for i in range(3):
-             row=ship[i][0]
-             col=ship[i][1]
-            #  if grid [row][col]==2:
-            #      print ("over lap")
-             grid[row][col]=SHIP_UNCLICKED
-             count=count+1
+        if check :
+            for i in ship:
+                row=i[0]
+                col=i[1]
+                grid[row][col]=SHIP_UNCLICKED
+            count=count+1
             
     return grid
 '''
