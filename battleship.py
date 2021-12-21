@@ -34,6 +34,7 @@ def makeModel(data):
     grid=emptyGrid(data["rows"],data["cols"])
     data["userboard"]=test.testGrid()
     data["compboard"]=addShips(grid,data["num_ships"])
+    data["tempship"]= test.testShip()
     # for i in range (2):
     #     grid=emptyGrid(data["rows"], data["cols"])
     #     for j in range(data["num_ships"]):
@@ -59,8 +60,9 @@ Returns: None
 def makeView(data, userCanvas, compCanvas):
     # grid= test.testGrid()
     showShips = True
-    drawGrid(data, compCanvas,data["compboard"] , showShips)
+    drawGrid(data, compCanvas,data["compboard"], showShips)
     drawGrid(data, userCanvas,data["userboard"], showShips)
+    drawShip(data, userCanvas, data["tempship"])
 
     # for i in range(2):
     #    if i==0:
@@ -242,7 +244,19 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
-    return
+    for i in range(data["rows"]):
+        for j in range(data["cols"]):
+            canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="blue")
+           
+    for i in range(len(ship)):
+        x=ship[i][0]
+        y=ship[i][1]
+        canvas.create_rectangle(y*data["cols"]*data["cell_size"], x*data["rows"]*data["cell_size"], (y+1)*data["cols"]*data["cell_size"], (x+1)*data["rows"]*data["cell_size"],fill="white")      
+    canvas.pack()
+
+  
+    canvas.pack()
+    return None
 
 
 '''
@@ -381,5 +395,6 @@ if __name__ == "__main__":
     test.testMakeModel()
     test.testDrawGrid()
     test.testGrid()
+    test.testDrawShip()
     ## Finally, run the simulation to test it manually ##
     runSimulation(500, 500)
