@@ -29,25 +29,13 @@ def makeModel(data):
     data["rows"]=10
     data["cols"]=10
     data["board_size"]=500
-    data["cell_size"]= 5
+    data["cell_size"]= (int)(data["board_size"]/(data["rows"]*data["cols"]))
     data["num_ships"]= 5
+    grid=emptyGrid(data["rows"],data["cols"])
+    data["userboard"]=test.testGrid()
+    data["compboard"]=addShips(grid,data["num_ships"])
 
-    for i in range (2):
-        grid=emptyGrid(10, 10)
-        for j in range(5):
-           ship=createShip()
-           check=checkShip(grid,ship)
-           if check==True:
-              addShips(grid,1)
-        if i==0:
-            data["board1"]=grid
-        else:
-            data["board2"]=grid        
-    
     return data
-
-
-
 
 '''
 makeView(data, userCanvas, compCanvas)
