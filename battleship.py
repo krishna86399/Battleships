@@ -46,13 +46,12 @@ Parameters: dict mapping strs to values ; Tkinter canvas ; Tkinter canvas
 Returns: None
 '''
 def makeView(data, userCanvas, compCanvas):
-   
-    showShips = True
-    drawGrid(data, compCanvas,data["compboard"] ,showShips)
-    drawGrid(data, userCanvas,data["userboard"],showShips)
-    drawShip(data, userCanvas,data["tempShip"])
+      
+        drawGrid(data, compCanvas,data["compboard"] ,False)
+        drawGrid(data, userCanvas,data["userboard"],True)
+        drawShip(data, userCanvas,data["tempShip"])
     #data["userShips"]=2
-    return None
+        return None
 
     
     
@@ -82,6 +81,8 @@ def mousePressed(data, event, board):
     col=rc[0]*data["rows"]*data["cell_size"]
     if(board=="user"):
         clickUserBoard(data, row, col)
+    else:
+         runGameTurn(data, row, col)    
 #### WEEK 1 ####
 
 '''
@@ -182,8 +183,17 @@ def drawGrid(data, canvas, grid, showShips):
                 if(showShips):
                    canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="yellow")
                 else: canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="blue")
+            elif (grid[i][j]==SHIP_CLICKED):
+                if(showShips):
+                   canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="red")
+                else: canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="blue")
+            elif (grid[i][j]==EMPTY_CLICKED):
+                if(showShips):
+                   canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="white")
+                else: canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="blue")    
             else:
-               canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="blue")  
+                canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="blue") 
+                
     canvas.pack()
     return None
 
@@ -382,7 +392,19 @@ Parameters: dict mapping strs to values ; 2D list of ints ; int ; int ; str
 Returns: None
 '''
 def updateBoard(data, board, row, col, player):
-    return
+    # if (player=="user"):
+    #     board= data["userboard"]
+    # else:
+    #     board=data["compboard"] 
+           
+
+    if (board[row][col]==SHIP_UNCLICKED):
+        board[row][col]=SHIP_CLICKED
+    else:    
+    
+        board[row][col]=EMPTY_CLICKED
+
+    
 
 
 '''
@@ -391,7 +413,13 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def runGameTurn(data, row, col):
-    return
+    if (data["compboard"][row][col] == SHIP_CLICKED|EMPTY_CLICKED):
+      return  None
+    else:
+        updateBoard(data, "compboard", row, col, "user")
+        
+
+
 
 
 '''
@@ -476,13 +504,14 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
-    test.testEmptyGrid()
-    test.testCheckShip()
-    test.testCreateShip()
-    test.testAddShips()
-    test.testMakeModel()
-    test.testDrawGrid()
-    test.testGrid()
-    test.testDrawShip()
+    # test.testEmptyGrid()
+    # test.testCheckShip()
+    # test.testCreateShip()
+    # test.testAddShips()
+    # test.testMakeModel()
+    # test.testDrawGrid()
+    # test.testGrid()
+    # test.testDrawShip()
+    test.testUpdateBoard()
     ## Finally, run the simulation to test it manually ##
-    runSimulation(500, 500)
+    # runSimulation(500, 500)
