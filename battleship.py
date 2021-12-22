@@ -217,7 +217,31 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isVertical(ship):
-    return
+    row=[]
+    col=[]
+    for i in range(len(ship)):
+        row.append(ship[i][0])
+        col.append(ship[i][1])
+    count=0
+    truecount=0
+    c=col[0]
+    for i in range(1,len(ship)):
+        if(c==col[i]):
+           count=count+1
+    if count==len(ship)-1:
+       truecount=truecount+1  
+ 
+    row.sort()
+    count=0
+    for i in range (len(ship)-1):
+        if (row[i]+1==row[i+1]):
+          count=count+1
+    if (count==len(ship)-1):
+        truecount=truecount+1  
+    if truecount==2:
+        return True
+    else:
+        return False  
 
 
 '''
@@ -226,9 +250,31 @@ Parameters: 2D list of ints
 Returns: bool
 '''
 def isHorizontal(ship):
-    return
-
-
+    row=[]
+    col=[]
+    for i in range(len(ship)):
+        row.append(ship[i][0])
+        col.append(ship[i][1])
+    count=0
+    truecount=0
+    r=row[0]
+    for i in range(1,len(ship)):
+        if(r==row[i]):
+           count=count+1
+    if count==len(ship)-1:
+       truecount=truecount+1  
+ 
+    col.sort()
+    count=0
+    for i in range (len(ship)-1):
+        if (col[i]+1==col[i+1]):
+          count=count+1
+    if (count==len(ship)-1):
+        truecount=truecount+1  
+    if truecount==2:
+        return True
+    else:
+        return False  
 '''
 getClickedCell(data, event)
 Parameters: dict mapping strs to values ; mouse event object
@@ -244,17 +290,14 @@ Parameters: dict mapping strs to values ; Tkinter canvas; 2D list of ints
 Returns: None
 '''
 def drawShip(data, canvas, ship):
-    for i in range(data["rows"]):
-        for j in range(data["cols"]):
-            canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="blue")
-           
+    # for i in range(data["rows"]):
+    #     for j in range(data["cols"]):
+    #         canvas.create_rectangle(j*data["cols"]*data["cell_size"], i*data["rows"]*data["cell_size"], (j+1)*data["cols"]*data["cell_size"], (i+1)*data["rows"]*data["cell_size"],fill="blue")
+    print(ship)      
     for i in range(len(ship)):
         x=ship[i][0]
         y=ship[i][1]
         canvas.create_rectangle(y*data["cols"]*data["cell_size"], x*data["rows"]*data["cell_size"], (y+1)*data["cols"]*data["cell_size"], (x+1)*data["rows"]*data["cell_size"],fill="white")      
-    canvas.pack()
-
-  
     canvas.pack()
     return None
 
@@ -394,6 +437,8 @@ if __name__ == "__main__":
     test.testAddShips()
     test.testMakeModel()
     test.testDrawGrid()
+    test.testIsHorizontal()
+    test.testIsVertical()
     test.testGrid()
     test.testDrawShip()
     ## Finally, run the simulation to test it manually ##
