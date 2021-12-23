@@ -383,7 +383,7 @@ Parameters: dict mapping strs to values ; int ; int
 Returns: None
 '''
 def clickUserBoard(data, row, col):
-    if(data["userShips"]==5):
+    if(data["userShips"]==data["num_ships"]):
         return None    
     t=[row,col]
     for k in range(len(data["tempShip"])):
@@ -398,9 +398,9 @@ def clickUserBoard(data, row, col):
        # print(data["userShips"])
        
        
-    if(data["userShips"]==5):
+    if(data["userShips"]==data["num_ships"]):
         print("you can start the game")
-        data.update({data["userShips"]:0})
+        data["userShips"] = 0
     return None
 
 
@@ -439,7 +439,7 @@ def runGameTurn(data, row, col):
       return  None
     else:
         updateBoard(data, data["compboard"], row, col, "user")
-    [r,c]=getComputerGuess(data["compboard"])
+    [r,c]=getComputerGuess(data["userboard"])
     updateBoard(data, data["userboard"], r, c, "comp")
     data["currentturns"]=data["currentturns"]+1
     if (data["currentturns"]==data["maxturns"]):
@@ -456,11 +456,11 @@ Returns: list of ints
 '''
 def getComputerGuess(board):
     
-    randomrowvalue = random.randint(1,8)
-    randomcolvalue = random.randint(1,8)
+    randomrowvalue = random.randint(0,9)
+    randomcolvalue = random.randint(0,9)
     while ((board[randomrowvalue][randomcolvalue] == SHIP_CLICKED) or (board[randomrowvalue][randomcolvalue]==EMPTY_CLICKED)):
-        randomrowvalue = random.randint(1,8)
-        randomcolvalue = random.randint(1,8)   
+        randomrowvalue = random.randint(0,9)
+        randomcolvalue = random.randint(0,9)   
     return [randomrowvalue,randomcolvalue]
     
 
