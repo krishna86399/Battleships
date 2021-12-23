@@ -33,6 +33,9 @@ def makeModel(data):
     data["tempShip"]=[]
     data["userShips"]=0
     data["winner"] = None
+    data["maxturns"] = 100
+    data["currentturns"]= 0
+    
  
     temp=emptyGrid(data["rows"],data["cols"])
     data["userboard"]=emptyGrid(data["rows"], data["cols"])
@@ -69,8 +72,21 @@ keyPressed(data, events)
 Parameters: dict mapping strs to values ; key event object
 Returns: None
 '''
+# from pynput.keyboard import Key, Listener
 def keyPressed(data, event):
-    pass
+      # if event.key == Key.enter:
+    if  event.keysym == 'Return':
+
+        makeModel(data)
+        return False	  
+    
+# Collect all event until released
+    # with Listener(on_press = keyPressed) as listener:
+    #   listener.join()
+    return  
+  
+
+   
 
 
 '''
@@ -404,8 +420,7 @@ def updateBoard(data, board, row, col, player):
 
     if (board[row][col]==SHIP_UNCLICKED):
         board[row][col]=SHIP_CLICKED
-    else:    
-    
+    if(board[row][col]==EMPTY_UNCLICKED):    
         board[row][col]=EMPTY_CLICKED
     if (isGameOver(board)==True):
         data["winner"]=player
@@ -426,6 +441,9 @@ def runGameTurn(data, row, col):
         updateBoard(data, data["compboard"], row, col, "user")
     [r,c]=getComputerGuess(data["compboard"])
     updateBoard(data, data["userboard"], r, c, "comp")
+    data["currentturns"]=data["currentturns"]+1
+    if (data["currentturns"]==data["maxturns"]):
+        data["winner"] = "draw"
 
 
 
@@ -440,7 +458,7 @@ def getComputerGuess(board):
     
     randomrowvalue = random.randint(1,8)
     randomcolvalue = random.randint(1,8)
-    while (board[randomrowvalue][randomcolvalue] == SHIP_CLICKED or board[randomrowvalue][randomcolvalue]==EMPTY_CLICKED):
+    while ((board[randomrowvalue][randomcolvalue] == SHIP_CLICKED) or (board[randomrowvalue][randomcolvalue]==EMPTY_CLICKED)):
         randomrowvalue = random.randint(1,8)
         randomcolvalue = random.randint(1,8)   
     return [randomrowvalue,randomcolvalue]
@@ -474,9 +492,16 @@ Returns: None
 def drawGameOver(data, canvas):
     if (data["winner"]=="user"):
         canvas.create_text(300, 50, text="Congratulations", fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(300, 200, text=" PRESS ENTER IF U WANT TO PLAY AGAIN ", fill="black", font=('Helvetica 15 bold')) 
  
     if (data["winner"]=="comp"):
-        canvas.create_text(300, 50, text=" YOU LOSE ", fill="black", font=('Helvetica 15 bold'))  
+        canvas.create_text(300, 50, text=" YOU LOSE ", fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(300, 200, text=" PRESS ENTER IF U WANT TO PLAY AGAIN ", fill="black", font=('Helvetica 15 bold'))   
+    if (data["winner"]=="draw"):
+        canvas.create_text(300, 50, text=" OUT OF MOVES ", fill="black", font=('Helvetica 15 bold'))
+        canvas.create_text(300, 200, text=" PRESS ENTER IF U WANT TO PLAY AGAIN ", fill="black", font=('Helvetica 15 bold')) 
+       
+           
     canvas.pack()
     return
 
@@ -536,14 +561,14 @@ def runSimulation(w, h):
 
 # This code runs the test cases to check your work
 if __name__ == "__main__":
-    # test.testEmptyGrid()
-    # test.testCheckShip()
-    # test.testCreateShip()
-    # test.testAddShips()
-    # test.testMakeModel()
-    # test.testDrawGrid()
-    # test.testGrid()
-    # test.testDrawShip()
+    test.testEmptyGrid()
+    test.testCheckShip()
+    test.testCreateShip()
+    test.testAddShips()
+    test.testMakeModel()
+    test.testDrawGrid()
+    test.testGrid()
+    test.testDrawShip()
     test.testUpdateBoard()
     test.testGetComputerGuess()
     test.testIsGameOver()
